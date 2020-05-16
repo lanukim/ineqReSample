@@ -2,7 +2,7 @@
 % Please edit documentation in R/helper_RPackage.R
 \name{adjustCiteMetrics}
 \alias{adjustCiteMetrics}
-\title{Adjust function}
+\title{adjustCiteMetrics}
 \usage{
 adjustCiteMetrics(
   papers,
@@ -25,6 +25,44 @@ adjustCiteMetrics(
   verbose = FALSE
 )
 }
+\arguments{
+\item{papers}{dataframe of the all papers that would have been cited. It must include two vectors: the vector of published paper ids (\code{"paperID"} and the vector of paper's published year (\code{"publishedYear"}).}
+
+\item{cites}{dataframe of the all citations that made to \code{"papers"}. It must include two vectors: the vector of cited ids (\code{"citedPaperID"}) and the vector of cited paper's year (\code{"citedPaperYear"}). The published year of citing paper (\code{"citingYear"}) is optional; it is needed if you filter citations made within k-year of citation window. Each row means one citation.}
+
+\item{pubID}{a character string identifying the column of papers containing publication IDs}
+
+\item{pubYear}{a character string identifying the column of papers containing publication years}
+
+\item{citedID}{a character string identifying the column of cites containing the IDs of cited papers}
+
+\item{citedYear}{a character string identifying the column of cites containing the years in which papers were cited}
+
+\item{citingYear}{optional; a character string identifying the column of cites containing the year in which each citing paper was published (default = NULL)}
+
+\item{citationWindow}{optional; a numeric scalar identifying citation window. For example, 2 means the function only analyzes citations made within 2 years after the cited paper is published. (default = NULL)}
+
+\item{quantiles}{optional; numeric in the interval \(0,1] referring to which citation quantiles to analyze. For example, if it is q20, the result provides the percent of papers needed to account 20\% of total citations. (default = c(.20, .80))}
+
+\item{refYear}{a numeric scalar identifying the referenced year among available pubYear in papers. Either \code{"refYear"} or \code{"refPaperCount"}/\code{"refCiteCount"} must be provided. (default = NULL)}
+
+\item{refPaperCount}{a numeric scalar identifying the referenced publication count. Either \code{"refYear"} or \code{"refPaperCount"}/\code{"refCiteCount"} must be provided. (default = NULL)}
+
+\item{refCiteCount}{a numeric scalar identifying the referenced citation count. Either \code{"refYear"} or \code{"refPaperCount"}/\code{"refCiteCount"} must be provided. (default = NULL)}
+
+\item{sims}{optional; a numeric scalar identifying the number of times to run the simulation (default = 10)}
+
+\item{lowCitesInclusion}{optional; must be logical. TRUE includes all results and FALSE excludes results of years with publication and citation count less than the reference year. (default=FALSE)}
+
+\item{lowCitesThreshold}{optional; a numeric scalar in the interval [0,1] identifying threshold to define lowCites (default = 0.1)}
+
+\item{paperDupThreshold}{optional; a numeric scalar in the interval \(0,1] (default = 0.95)}
+
+\item{periods}{optional; numeric vectors identifying which years we analyze in the data. If it is NULL (default), the function automatically selects all years in \code("papers").}
+
+\item{verbose}{optional; must be logical. TRUE returns detailed warnings related to lowCites. (default=NULL)}
+}
 \description{
-Adjust function
+Creates a adjustCiteMetrics class
+Computes the uncorrected and robust inequality measures.
 }
