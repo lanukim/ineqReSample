@@ -11,8 +11,31 @@ gini <- function (x, weights = rep(1, length = length(x)))
     sum(nu[-1] * p[-n]) - sum(nu[-n] * p[-1])
 }
 
-#' Adjust function
-#' @export
+
+#' adjustCiteMetrics
+#' 
+#' Creates a adjustCiteMetrics class
+#' Computes the uncorrected and robust inequality measures.
+#' 
+#' @param papers dataframe of the all papers that would have been cited. It must include two vectors: the vector of published paper ids (\code{"paperID"} and the vector of paper's published year (\code{"publishedYear"}). 
+#' @param cites dataframe of the all citations that made to \code{"papers"}. It must include two vectors: the vector of cited ids (\code{"citedPaperID"}) and the vector of cited paper's year (\code{"citedPaperYear"}). The published year of citing paper (\code{"citingYear"}) is optional; it is needed if you filter citations made within k-year of citation window. Each row means one citation. 
+#' @param pubID a character string identifying the column of papers containing publication IDs
+#' @param pubYear a character string identifying the column of papers containing publication years
+#' @param citedID a character string identifying the column of cites containing the IDs of cited papers
+#' @param citedYear a character string identifying the column of cites containing the years in which papers were cited
+#' @param citingYear optional; a character string identifying the column of cites containing the year in which each citing paper was published (default = NULL)
+#' @param citationWindow optional; a numeric scalar identifying citation window. For example, 2 means the function only analyzes citations made within 2 years after the cited paper is published. (default = NULL)
+#' @param quantiles optional; numeric in the interval \(0,1\] referring to which citation quantiles to analyze. For example, if it is q20, the result provides the percent of papers needed to account 20% of total citations. (default = c(.20, .80))
+#' @param refYear a numeric scalar identifying the referenced year among available pubYear in papers. Either \code{"refYear"} or \code{"refPaperCount"}/\code{"refCiteCount"} must be provided. (default = NULL)
+#' @param refPaperCount a numeric scalar identifying the referenced publication count. Either \code{"refYear"} or \code{"refPaperCount"}/\code{"refCiteCount"} must be provided. (default = NULL)
+#' @param refCiteCount a numeric scalar identifying the referenced citation count. Either \code{"refYear"} or \code{"refPaperCount"}/\code{"refCiteCount"} must be provided. (default = NULL)
+#' @param sims optional; a numeric scalar identifying the number of times to run the simulation (default = 10)
+#' @param lowCitesInclusion optional; must be logical. TRUE includes all results and FALSE excludes results of years with publication and citation count less than the reference year. (default=FALSE)
+#' @param lowCitesThreshold optional; a numeric scalar in the interval \[0,1\] identifying threshold to define lowCites (default = 0.1)
+#' @param paperDupThreshold optional; a numeric scalar in the interval \(0,1\] (default = 0.95)
+#' @param periods optional; numeric vectors identifying which years we analyze in the data. If it is NULL (default), the function automatically selects all years in \code("papers"). 
+#' @param verbose optional; must be logical. TRUE returns detailed warnings related to lowCites. (default=NULL)
+
 adjustCiteMetrics <- function(papers,
                               cites,
                               pubID="paperID",
@@ -31,20 +54,6 @@ adjustCiteMetrics <- function(papers,
                               periods=NULL,
                               verbose=FALSE) {
     
-
-    ## papers is the dataframe with two vectors: the vector of published paper ids (paperID) and the vector of paper's published year (publishedYear). 
-    ## cites needs to be the dataframe with two vectors: the vector of cited ids (citedPaperID) and the vector of cited paper's year (citedPaperYear). The published year of citing paper is optional; it is needed if you filter citations made within k-year of citation window. Each row means one citation. 
-    ## citationWindow is a single numeric vector of citation window. Citation window, for example 2, means our function only analyzes citations made within 2 years after the cited paper is published. 
-    ## quantiles refer to quantiles of citations. For example, if it is q20, the result provides the percent of papers needed to account 20% of total citations. q1-q99 are all possible. 
-    ## nR0 is the number of papers Receiving citations in the reference year
-    ## nS0 is the number of papers Sending citations in the reference year
-    ##    (possibly a vector of nS groups)
-    ## nC0 is the number of Citations per sending paper in the reference year
-    ##    (possibly a vector; the number of citations for
-    ##     each paper in each nS group)
-    ## sims is the number of times to run the simulation
-    ## reference is a logical indicating whether this is the reference year
-    ## periods mean which years we analyze in the data. If it is NULL (default), the function automatically selects consecutive years from minimum to maximum years in papers. 
 
     ## This simulator computes the Gini coefficient (Gini) for the
     ## observed citation distribution
@@ -459,8 +468,7 @@ adjustCiteMetrics <- function(papers,
 
 
 
-#' Extractor function
-#' @export
+## Extractor function
 citeIneq <- function(result, 
                      metric="all", 
                      type="resampled", 
