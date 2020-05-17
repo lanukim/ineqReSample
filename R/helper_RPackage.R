@@ -21,14 +21,14 @@ gini <- function (x, weights = rep(1, length = length(x)))
 #' @param pubYear a character string identifying the column of papers containing publication years
 #' @param citedID a character string identifying the column of cites containing the IDs of cited papers
 #' @param citedYear a character string identifying the column of cites containing the years in which papers were cited
-#' @param citingYear optional; a character string identifying the column of cites containing the year in which each citing paper was published. default = NULL
-#' @param citationWindow optional; a numeric scalar identifying citation window. For example, 2 means the function only analyzes citations made within 2 years after the cited paper is published. default = NULL
-#' @param quantiles optional; numeric in the interval \(0,1\] referring to which citation quantiles to analyze. For example, if it is q20, the result provides the percent of papers needed to account 20% of total citations. default = .20, .80
-#' @param refYear a numeric scalar identifying the referenced year among available pubYear in papers. Either \code{refYear} or \code{refPaperCount}/\code{refCiteCount} must be provided. default = NULL
-#' @param refPaperCount a numeric scalar identifying the referenced publication count. Either \code{refYear} or \code{refPaperCount}/\code{refCiteCount} must be provided. default = NULL
-#' @param refCiteCount a numeric scalar identifying the referenced citation count. Either \code{refYear} or \code{refPaperCount}/\code{refCiteCount} must be provided. default = NULL
+#' @param citingYear optional; a character string identifying the column of cites containing the year in which each citing paper was published. (default = NULL)
+#' @param citationWindow optional; a numeric scalar identifying citation window. For example, 2 means the function only analyzes citations made within 2 years after the cited paper is published. (default = NULL)
+#' @param quantiles optional; numeric in the interval \(0,1\] referring to which citation quantiles to analyze. For example, if it is q20, the result provides the percent of papers needed to account 20% of total citations. (default = c(.20, .80))
+#' @param refYear a numeric scalar identifying the referenced year among available pubYear in papers. Either \code{refYear} or \code{refPaperCount}/\code{refCiteCount} must be provided. (default = NULL)
+#' @param refPaperCount a numeric scalar identifying the referenced publication count. Either \code{refYear} or \code{refPaperCount}/\code{refCiteCount} must be provided. (default = NULL)
+#' @param refCiteCount a numeric scalar identifying the referenced citation count. Either \code{refYear} or \code{refPaperCount}/\code{refCiteCount} must be provided. (default = NULL)
 #' @param sims optional; a numeric scalar identifying the number of times to run the simulation (default = 10)
-#' @param lowCitesInclusion optional; must be logical. TRUE includes all results and FALSE excludes results of years with publication and citation count less than the reference year. default=FALSE
+#' @param lowCitesInclusion optional; must be logical. TRUE includes all results and FALSE excludes results of years with publication and citation count less than the reference year. (default=FALSE)
 #' @param lowCitesThreshold optional; a numeric scalar in the interval \[0,1\] identifying threshold to define lowCites (default = 0.1)
 #' @param paperDupThreshold optional; a numeric scalar in the interval \(0,1\] (default = 0.95)
 #' @param periods optional; numeric vectors identifying which years we analyze in the data. If it is NULL (default), the function automatically selects all years in \code{papers}. 
@@ -132,7 +132,6 @@ adjustCiteMetrics <- function(papers,
         }
     }
 
-# Lanu edited from here. 
     if (!is.null(refYear)) {
         if ((!is.numeric(refYear)) || (length(refYear)!=1)) {
             stop("refYear should be a numeric scalar identifying the referenced year among available pubYear in papers")
@@ -465,17 +464,19 @@ adjustCiteMetrics <- function(papers,
 }
 
 
-
-## Extractor function
+#' citeIneq
+#' 
+#' Extract 
+#' 
+#' @param result \code{adjustCiteMetrics} class. It should be created by \code{adjustCiteMetrics} function.
+#' @param metric optional; character string to choose which inequality measures to report. default option ("all") reports all metrics computed by \code{adjustCiteMetrics}. 
+#' @param type optional; character string to decide which metrics to show between resampled (=adjusted) and original measures (=uncorrected). (default = "resampled")
+#' @param showMargins optional; logical value to decide whether to show margins or not. 
 citeIneq <- function(result, 
                      metric="all", 
                      type="resampled", 
                      showMargins=FALSE
                      ) {
-    ## result should be the outcome of adjustCiteMetrics function. 
-    ## metric chooses which inequality measures to report. Possible options are "gini", "hhi", "everCited", and any quantiles q1-q99. 
-    ## type decides which metrics to show between resampled (=adjusted) and original measures. Possible options are "resampled" and "uncorrected".
-    ## showMargins decides whether to show margins or not. 
 
     ## check that result if an adjustCiteMetrics class
     if (class(result)!="adjustCiteMetrics")
@@ -492,8 +493,6 @@ citeIneq <- function(result,
     
     ## Check called metrics exist in adjustCiteMetrics class
     if (length(setdiff(metric, result$availMetrics))) {
-    
-    ##if (any(!metric %in% substr(names(result), 1, nchar(names(result))-2))) {
         stop("metric can only request inequality measures reported in the supplied adjustCiteMetrics object")
     }
     
@@ -520,5 +519,3 @@ citeIneq <- function(result,
     
     return(result)
 }
-    
-

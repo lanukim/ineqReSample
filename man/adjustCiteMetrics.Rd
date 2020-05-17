@@ -38,21 +38,21 @@ adjustCiteMetrics(
 
 \item{citedYear}{a character string identifying the column of cites containing the years in which papers were cited}
 
-\item{citingYear}{optional; a character string identifying the column of cites containing the year in which each citing paper was published. default = NULL}
+\item{citingYear}{optional; a character string identifying the column of cites containing the year in which each citing paper was published. (default = NULL)}
 
-\item{citationWindow}{optional; a numeric scalar identifying citation window. For example, 2 means the function only analyzes citations made within 2 years after the cited paper is published. default = NULL}
+\item{citationWindow}{optional; a numeric scalar identifying citation window. For example, 2 means the function only analyzes citations made within 2 years after the cited paper is published. (default = NULL)}
 
-\item{quantiles}{optional; numeric in the interval \(0,1] referring to which citation quantiles to analyze. For example, if it is q20, the result provides the percent of papers needed to account 20\% of total citations. default = .20, .80}
+\item{quantiles}{optional; numeric in the interval \(0,1] referring to which citation quantiles to analyze. For example, if it is q20, the result provides the percent of papers needed to account 20\% of total citations. (default = c(.20, .80))}
 
-\item{refYear}{a numeric scalar identifying the referenced year among available pubYear in papers. Either \code{refYear} or \code{refPaperCount}/\code{refCiteCount} must be provided. default = NULL}
+\item{refYear}{a numeric scalar identifying the referenced year among available pubYear in papers. Either \code{refYear} or \code{refPaperCount}/\code{refCiteCount} must be provided. (default = NULL)}
 
-\item{refPaperCount}{a numeric scalar identifying the referenced publication count. Either \code{refYear} or \code{refPaperCount}/\code{refCiteCount} must be provided. default = NULL}
+\item{refPaperCount}{a numeric scalar identifying the referenced publication count. Either \code{refYear} or \code{refPaperCount}/\code{refCiteCount} must be provided. (default = NULL)}
 
-\item{refCiteCount}{a numeric scalar identifying the referenced citation count. Either \code{refYear} or \code{refPaperCount}/\code{refCiteCount} must be provided. default = NULL}
+\item{refCiteCount}{a numeric scalar identifying the referenced citation count. Either \code{refYear} or \code{refPaperCount}/\code{refCiteCount} must be provided. (default = NULL)}
 
 \item{sims}{optional; a numeric scalar identifying the number of times to run the simulation (default = 10)}
 
-\item{lowCitesInclusion}{optional; must be logical. TRUE includes all results and FALSE excludes results of years with publication and citation count less than the reference year. default=FALSE}
+\item{lowCitesInclusion}{optional; must be logical. TRUE includes all results and FALSE excludes results of years with publication and citation count less than the reference year. (default=FALSE)}
 
 \item{lowCitesThreshold}{optional; a numeric scalar in the interval [0,1] identifying threshold to define lowCites (default = 0.1)}
 
