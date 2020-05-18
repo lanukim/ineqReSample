@@ -36,7 +36,8 @@ gini <- function (x, weights = rep(1, length = length(x)))
 #'
 #' @examples 
 #' \dontrun{
-#' load("sampleData.Rdata")
+#' data(papers)
+#' data(cites)
 #' result <- adjustCiteMetrics(papers = papers, 
 #' cites = cites, 
 #' pubID = "paperID", 
@@ -44,8 +45,6 @@ gini <- function (x, weights = rep(1, length = length(x)))
 #' citedID = "citedID",
 #' citedYear = "citedYear",
 #' refYear = 1996)
-#' 
-#' citeIneq(result)
 #' }
 adjustCiteMetrics <- function(papers,
                               cites,
@@ -179,8 +178,6 @@ adjustCiteMetrics <- function(papers,
         stop("verbose must be logical")
     }
 
-## from here
-    
     ## Set up dataframes
     ## papers
     if(pubID %in% colnames(papers)) {
@@ -258,7 +255,6 @@ adjustCiteMetrics <- function(papers,
 
     ## Set up Years
     if (is.null(periods)) {
-        #years <- min(papers$publishedYear):max(papers$publishedYear)    
         years <- unique(papers$publishedYear)
     } else if (sum(periods %in% unique(papers$publishedYear))==length(periods)) {
         years <- periods
@@ -283,9 +279,6 @@ adjustCiteMetrics <- function(papers,
         ## Sum of citable papers
         nR <- length(unique(papersYear))
         nSXnC <- length(citesYear)
-        
-        ## Enforce rounding to nearest hundred papers for nR and nR0
-        ##nR0 <- round(nR0, -2)
         
         ## Set up vectors to store the distribution of citations averaged
         ##  across simulation runs for both the "true" and "subsampled" citations
@@ -414,13 +407,9 @@ adjustCiteMetrics <- function(papers,
         ## Collect output
         res <- list(giniUC=giniC,
                     everCitedUC=withCites,
-                    ##pct20=pct20,
-                    ##pct80=pct80,
                     hhiUC=herf,
                     giniRS=mean(giniCrs),
                     everCitedRS=mean(withCitesRS),
-                    ##pct20RS=mean(pct20RS),
-                    ##pct80RS=mean(pct80RS),
                     hhiRS=mean(herfRS),
                     nR=nR,
                     nR0=nR0,
@@ -444,19 +433,10 @@ adjustCiteMetrics <- function(papers,
         }
         
         resALL <- rbind(resALL, c(years[i], unlist(res)))
-        ##res$nR, res$nR0, res$nSXnC, res$nS0XnC0,
-        ##res$withCites, res$withCitesRS,
-        ##res$pct20, res$pct20RS, res$pct80, res$pct80RS,
-        ##res$gini, res$giniRS, res$hhi, res$hhiRS, res$lowCites
-        ##))
     }
     
     resALL <- as.data.frame(resALL)
     names(resALL)[1] <- "year"
-    ##names(resALL)  <- c("year", "nR", "nR0", "nS*nC", "nS0*nC0",
-    ##                    "everCitedUC", "everCitedRS", "pct20UC", "pct20RS", "pct80UC", "pct80RS",
-    ##                    "giniUC", "giniRS", "hhiUC", "hhiRS", "lowCites")
-    ## UC refers to "Uncorrected" and RC refers to "Resampled"
     
     ## lowCites option: if TRUE (default), deletes lowCites==1; if FALSE, presents all but gives a warning.
     lowCitesYears <- resALL$year[resALL$lowCites>lowCitesThreshold]
@@ -484,6 +464,11 @@ adjustCiteMetrics <- function(papers,
 #' @param metric optional; character string to choose which inequality measures to report. default option ("all") reports all metrics computed by \code{adjustCiteMetrics}. 
 #' @param type optional; character string to decide which metrics to show between resampled (=adjusted) and original measures (=uncorrected). (default = "resampled")
 #' @param showMargins optional; logical value to decide whether to show margins or not. 
+#' 
+#' @examples 
+#' \dontrun{
+#' citeIneq(result) 
+#' }
 citeIneq <- function(result, 
                      metric="all", 
                      type="resampled", 
@@ -505,7 +490,6 @@ citeIneq <- function(result,
     
     ## Check called metrics exist in adjustCiteMetrics class
     if (length(setdiff(metric, result$availMetrics))) {
-    ##if (any(!metric %in% substr(names(result), 1, nchar(names(result))-2))) {
         stop("metric can only request inequality measures reported in the supplied adjustCiteMetrics object")
     }
     

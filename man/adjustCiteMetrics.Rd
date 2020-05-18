@@ -68,7 +68,8 @@ Computes the uncorrected and robust inequality measures.
 }
 \examples{
 \dontrun{
-load("sampleData.Rdata")
+data(papers)
+data(cites)
 result <- adjustCiteMetrics(papers = papers, 
 cites = cites, 
 pubID = "paperID", 
@@ -76,7 +77,5 @@ pubYear = "publishedYear",
 citedID = "citedID",
 citedYear = "citedYear",
 refYear = 1996)
-
-citeIneq(result)
 }
 }

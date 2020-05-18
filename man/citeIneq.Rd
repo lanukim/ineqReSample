@@ -18,3 +18,8 @@ citeIneq(result, metric = "all", type = "resampled", showMargins = FALSE)
 \description{
 Extract necessary information from the data frame in adjustCiteMetrics class.
 }
+\examples{
+\dontrun{
+citeIneq(result) 
+}
+}
