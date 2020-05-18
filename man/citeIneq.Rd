@@ -17,4 +17,5 @@ citeIneq(result, metric = "all", type = "resampled", showMargins = FALSE)
 }
 \description{
 Extract
+abc
 }

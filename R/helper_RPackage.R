@@ -463,10 +463,10 @@ adjustCiteMetrics <- function(papers,
     return(resALL)
 }
 
-
 #' citeIneq
 #' 
-#' Extract 
+#' Extract
+#' abc 
 #' 
 #' @param result \code{adjustCiteMetrics} class. It should be created by \code{adjustCiteMetrics} function.
 #' @param metric optional; character string to choose which inequality measures to report. default option ("all") reports all metrics computed by \code{adjustCiteMetrics}. 
@@ -493,6 +493,7 @@ citeIneq <- function(result,
     
     ## Check called metrics exist in adjustCiteMetrics class
     if (length(setdiff(metric, result$availMetrics))) {
+    ##if (any(!metric %in% substr(names(result), 1, nchar(names(result))-2))) {
         stop("metric can only request inequality measures reported in the supplied adjustCiteMetrics object")
     }
     
