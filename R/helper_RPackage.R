@@ -33,7 +33,7 @@ gini <- function (x, weights = rep(1, length = length(x)))
 #' @param paperDupThreshold optional; a numeric scalar in the interval \(0,1\] (default = 0.95)
 #' @param periods optional; numeric vectors identifying which years we analyze in the data. If it is NULL (default), the function automatically selects all years in \code{papers}. 
 #' @param verbose optional; must be logical. TRUE returns detailed warnings related to lowCites. (default=NULL)
-
+#'
 #' @examples 
 #' \dontrun{
 #' load("sampleData.Rdata")
@@ -47,7 +47,6 @@ gini <- function (x, weights = rep(1, length = length(x)))
 #' 
 #' citeIneq(result)
 #' }
-
 adjustCiteMetrics <- function(papers,
                               cites,
                               pubID="paperID",
@@ -533,5 +532,3 @@ citeIneq <- function(result,
     
     return(result)
 }
-
-
