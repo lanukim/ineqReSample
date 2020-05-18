@@ -16,6 +16,5 @@ citeIneq(result, metric = "all", type = "resampled", showMargins = FALSE)
 \item{showMargins}{optional; logical value to decide whether to show margins or not.}
 }
 \description{
-Extract
-abc
+Extract necessary information from the data frame in adjustCiteMetrics class.
 }

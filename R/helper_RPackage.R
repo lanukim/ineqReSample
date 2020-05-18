@@ -34,6 +34,20 @@ gini <- function (x, weights = rep(1, length = length(x)))
 #' @param periods optional; numeric vectors identifying which years we analyze in the data. If it is NULL (default), the function automatically selects all years in \code{papers}. 
 #' @param verbose optional; must be logical. TRUE returns detailed warnings related to lowCites. (default=NULL)
 
+#' @examples 
+#' \dontrun{
+#' load("sampleData.Rdata")
+#' result <- adjustCiteMetrics(papers = papers, 
+#' cites = cites, 
+#' pubID = "paperID", 
+#' pubYear = "publishedYear", 
+#' citedID = "citedID",
+#' citedYear = "citedYear",
+#' refYear = 1996)
+#' 
+#' citeIneq(result)
+#' }
+
 adjustCiteMetrics <- function(papers,
                               cites,
                               pubID="paperID",
@@ -465,8 +479,7 @@ adjustCiteMetrics <- function(papers,
 
 #' citeIneq
 #' 
-#' Extract
-#' abc 
+#' Extract necessary information from the data frame in adjustCiteMetrics class.
 #' 
 #' @param result \code{adjustCiteMetrics} class. It should be created by \code{adjustCiteMetrics} function.
 #' @param metric optional; character string to choose which inequality measures to report. default option ("all") reports all metrics computed by \code{adjustCiteMetrics}. 
@@ -520,3 +533,5 @@ citeIneq <- function(result,
     
     return(result)
 }
+
+
