@@ -89,7 +89,8 @@ citedYear = "citedYear",
 refYear = 1996)
 }
 \references{
-\url{https://en.wikipedia.org/wiki/List_of_Crayola_crayon_colors}
+ref1 \url{https://en.wikipedia.org/wiki/List_of_Crayola_crayon_colors}
+ref2 \url{https://en.wikipedia.org/wiki/List_of_Crayola_crayon_colors}
 }
 \seealso{
 \code{\link{citeIneq}}
