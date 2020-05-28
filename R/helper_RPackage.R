@@ -34,7 +34,7 @@ gini <- function (x, weights = rep(1, length = length(x)))
 #' @param verbose logical; returns detailed warnings related to lowCites (default=FALSE)
 #'
 #' @details Are these details?
-#' @values Are these values?
+#' @return None
 #' @references \url{https://en.wikipedia.org/wiki/List_of_Crayola_crayon_colors}
 #' @seealso \code{\link{brocolors}}
 #'

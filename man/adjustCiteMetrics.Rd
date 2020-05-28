@@ -62,6 +62,9 @@ adjustCiteMetrics(
 
 \item{verbose}{logical; returns detailed warnings related to lowCites (default=FALSE)}
 }
+\value{
+None
+}
 \description{
 Use resampling to correct citation inequality measures for marginals bias
 }
