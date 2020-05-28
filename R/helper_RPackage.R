@@ -38,15 +38,6 @@ gini <- function (x, weights = rep(1, length = length(x)))
 #' @references \url{https://en.wikipedia.org/wiki/List_of_Crayola_crayon_colors}
 #' @seealso \code{\link{brocolors}}
 #'
-#' @section Values:
-#' Are these values?
-#'
-#' @section References:
-#' Are these references?
-#'
-#' @section See also:
-#' Are these see also?
-#'
 #' @examples 
 #' data(papers)
 #' data(cites)

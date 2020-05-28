@@ -68,21 +68,6 @@ Use resampling to correct citation inequality measures for marginals bias
 \details{
 Are these details?
 }
-\section{Values}{
-
-Are these values?
-}
-
-\section{References}{
-
-Are these references?
-}
-
-\section{See also}{
-
-Are these see also?
-}
-
 \examples{
 data(papers)
 data(cites)
