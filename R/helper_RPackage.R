@@ -34,16 +34,20 @@ gini <- function (x, weights = rep(1, length = length(x)))
 #' @param verbose logical; returns detailed warnings related to lowCites (default=FALSE)
 #'
 #' @details
+#' paragraph ABC
+#' 
+#' paragraph DEF
 #' 
 #' @return An object of class STM
 #' \describe{
 #'  \item{mu}{The corpus mean of topic prevalence and coefficients}
-#'  \item{sigma}{Covariance matri}
+#'  \item{sigma}{Covariance matrix}
 #' }
 #' 
-#' @references \url{https://en.wikipedia.org/wiki/List_of_Crayola_crayon_colors}
+#' @references
+#' \url{https://en.wikipedia.org/wiki/List_of_Crayola_crayon_colors}
 #' 
-#' @seealso \code{\link{brocolors}}
+#' @seealso \code{\link{citeIneq}}
 #'
 #' @examples 
 #' data(papers)

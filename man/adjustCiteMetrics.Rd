@@ -66,14 +66,16 @@ adjustCiteMetrics(
 An object of class STM
 \describe{
 \item{mu}{The corpus mean of topic prevalence and coefficients}
-\item{sigma}{Covariance matri}
+\item{sigma}{Covariance matrix}
 }
 }
 \description{
 Use resampling to correct citation inequality measures for marginals bias
 }
 \details{
+paragraph ABC
 
+paragraph DEF
 }
 \examples{
 data(papers)
@@ -90,5 +92,5 @@ refYear = 1996)
 \url{https://en.wikipedia.org/wiki/List_of_Crayola_crayon_colors}
 }
 \seealso{
-\code{\link{brocolors}}
+\code{\link{citeIneq}}
 }
