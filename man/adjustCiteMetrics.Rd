@@ -92,5 +92,5 @@ refYear = 1996)
 \url{https://en.wikipedia.org/wiki/List_of_Crayola_crayon_colors}
 }
 \seealso{
-\code{\link[=citeIneq]{citeIneq()}}
+\code{\link{citeIneq}}
 }
