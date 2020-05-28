@@ -33,9 +33,16 @@ gini <- function (x, weights = rep(1, length = length(x)))
 #' @param periods optional; numeric vectors identifying which years we analyze in the data. If it is NULL (default), the function automatically selects all years in \code{papers}. 
 #' @param verbose logical; returns detailed warnings related to lowCites (default=FALSE)
 #'
-#' @details Are these details?
-#' @return None
+#' @details
+#' 
+#' @return An object of class STM
+#' \itemize{
+#'  \item{"mu"}{The corpus mean of topic prevalence and coefficients}
+#'  \item{"sigma"}{Covariance matri}
+#' }
+#' 
 #' @references \url{https://en.wikipedia.org/wiki/List_of_Crayola_crayon_colors}
+#' 
 #' @seealso \code{\link{brocolors}}
 #'
 #' @examples 

@@ -63,13 +63,17 @@ adjustCiteMetrics(
 \item{verbose}{logical; returns detailed warnings related to lowCites (default=FALSE)}
 }
 \value{
-None
+An object of class STM
+\itemize{
+\item{"mu"}{The corpus mean of topic prevalence and coefficients}
+\item{"sigma"}{Covariance matri}
+}
 }
 \description{
 Use resampling to correct citation inequality measures for marginals bias
 }
 \details{
-Are these details?
+
 }
 \examples{
 data(papers)
