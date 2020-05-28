@@ -64,9 +64,9 @@ adjustCiteMetrics(
 }
 \value{
 An object of class STM
-\itemize{
-\item{"mu"}{The corpus mean of topic prevalence and coefficients}
-\item{"sigma"}{Covariance matri}
+\describe{
+\item{mu}{The corpus mean of topic prevalence and coefficients}
+\item{sigma}{Covariance matri}
 }
 }
 \description{

@@ -36,9 +36,9 @@ gini <- function (x, weights = rep(1, length = length(x)))
 #' @details
 #' 
 #' @return An object of class STM
-#' \itemize{
-#'  \item{"mu"}{The corpus mean of topic prevalence and coefficients}
-#'  \item{"sigma"}{Covariance matri}
+#' \describe{
+#'  \item{mu}{The corpus mean of topic prevalence and coefficients}
+#'  \item{sigma}{Covariance matri}
 #' }
 #' 
 #' @references \url{https://en.wikipedia.org/wiki/List_of_Crayola_crayon_colors}
