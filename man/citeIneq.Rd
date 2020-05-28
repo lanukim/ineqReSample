@@ -7,19 +7,17 @@
 citeIneq(result, metric = "all", type = "resampled", showMargins = FALSE)
 }
 \arguments{
-\item{result}{\code{adjustCiteMetrics} class. It should be created by \code{adjustCiteMetrics} function.}
+\item{result}{a \code{adjustCiteMetrics} class object created by \code{adjustCiteMetrics}.}
 
-\item{metric}{optional; character string to choose which inequality measures to report. default option ("all") reports all metrics computed by \code{adjustCiteMetrics}.}
+\item{metric}{character vector indicating the inequality measures to report; possible choices are \verb{everCited', }gini', \verb{hhi', or user-requested quantiles, such as }q20' or \verb{q80'.  Default is }all', which reports all metrics computed by \code{adjustCiteMetrics}.}
 
-\item{type}{optional; character string to decide which metrics to show between resampled (=adjusted) and original measures (=uncorrected). (default = "resampled")}
+\item{type}{character string, the default, \verb{resampled', reports the adjusted inequality measures.  Set to }uncorrected' to see the inequality metrics before sampling adjustment is applied}
 
-\item{showMargins}{optional; logical value to decide whether to show margins or not.}
+\item{showMargins}{logical, report information of the marginal and reference number of papers and citations (default is FALSE)}
 }
 \description{
-Extract necessary information from the data frame in adjustCiteMetrics class.
+Extract citation inequality metrics from an \code{adjustCiteMetrics} object after resampling to correct for marginals bias
 }
 \examples{
-\dontrun{
 citeIneq(result) 
-}
 }

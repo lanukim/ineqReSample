@@ -12,30 +12,40 @@ gini <- function (x, weights = rep(1, length = length(x)))
 
 #' adjustCiteMetrics
 #' 
-#' Creates a adjustCiteMetrics class
-#' Computes the uncorrected and robust inequality measures.
+#' Use resampling to correct citation inequality measures for marginals bias
 #' 
-#' @param papers dataframe of the all papers that would have been cited. It must include two vectors: the vector of published paper ids \code{paperID} and the vector of paper's published year \code{publishedYear}. 
-#' @param cites dataframe of the all citations that made to \code{papers}. It must include two vectors: the vector of cited ids \code{citedPaperID} and the vector of cited paper's year \code{citedPaperYear}. The published year of citing paper (\code{citingYear}) is optional; it is needed if you filter citations made within k-year of citation window. Each row means one citation. 
-#' @param pubID a character string identifying the column of papers containing publication IDs
-#' @param pubYear a character string identifying the column of papers containing publication years
-#' @param citedID a character string identifying the column of cites containing the IDs of cited papers
-#' @param citedYear a character string identifying the column of cites containing the years in which papers were cited
-#' @param citingYear optional; a character string identifying the column of cites containing the year in which each citing paper was published. (default = NULL)
-#' @param citationWindow optional; a numeric scalar identifying citation window. For example, 2 means the function only analyzes citations made within 2 years after the cited paper is published. (default = NULL)
-#' @param quantiles optional; numeric in the interval \(0,1\] referring to which citation quantiles to analyze. For example, if it is q20, the result provides the percent of papers needed to account 20% of total citations. (default = c(.20, .80))
-#' @param refYear a numeric scalar identifying the referenced year among available pubYear in papers. Either \code{refYear} or \code{refPaperCount}/\code{refCiteCount} must be provided. (default = NULL)
+#' @param papers required dataframe containing all citable papers studied (one row per paper). This dataframe must include two columns: the published paper IDs (\code{paperID}) and the publication year of the paper (\code{publishedYear}). 
+#' @param cites required dataframe containing all citations made to the papers listed in \code{papers} over a given set of years (one row per citation). This dataframe must include at least two columns: the IDs of the cited papers (\code{citedPaperID}), corresponding to the IDs given in \code{papers}, and the cited paper's publication year (\code{citedPaperYear}). Optionally, this dataframe may include the published year of paper sending the citation (\code{citingYear}) may be included optional.  \code{citingYear} must be included if users wish to filter citations made within \code{citationWindow} years of the cited papers' publication dates.  
+#' @param pubID character string, the column of \code{papers} containing publication IDs (default is `paperID').  IDs may be numeric, character, or factor.
+#' @param pubYear character string, the column of \code{papers} containing publication years of each paper in numeric format (default is `publishedYear')
+#' @param citedID character string, the column of \code{cites} containing the IDs of cited papers (default is `citedPaperID'). IDs may be numeric, character, or factor.
+#' @param citedYear character string, the column of \code{cites} containing the years (as numeric data) in which papers were cited (default is `citedPaperYear')
+#' @param citingYear character string, the column of \code{cites} containing the year (as numeric data) in which each citing paper was published (default = NULL)
+#' @param citationWindow numeric scalar, the number of years covered by the citation window. For example, 2 means the function only analyzes citations made within 2 years after the cited paper is published. (default = NULL)
+#' @param quantiles numeric vector in the interval \(0,1\] indicating the citation quantiles to be computed. Default = c(.20, .80), for the percentage of papers accounting for 20 percent and 80 percent of all citations.
+#' @param refYear numeric scalar, the reference (or baseline) year among available publication years of papers in \code{papers}. Either \code{refYear} or \code{refPaperCount}/\code{refCiteCount} must be provided. (default = NULL)
 #' @param refPaperCount a numeric scalar identifying the referenced publication count. Either \code{refYear} or \code{refPaperCount}/\code{refCiteCount} must be provided. (default = NULL)
 #' @param refCiteCount a numeric scalar identifying the referenced citation count. Either \code{refYear} or \code{refPaperCount}/\code{refCiteCount} must be provided. (default = NULL)
 #' @param sims optional; a numeric scalar identifying the number of times to run the simulation (default = 10)
-#' @param lowCitesInclusion optional; must be logical. TRUE includes all results and FALSE excludes results of years with publication and citation count less than the reference year. (default=FALSE)
-#' @param lowCitesThreshold optional; a numeric scalar in the interval \[0,1\] identifying threshold to define lowCites (default = 0.1)
-#' @param paperDupThreshold optional; a numeric scalar in the interval \(0,1\] (default = 0.95)
+#' @param lowCitesInclusion logical, TRUE: reports all results; FALSE: excludes any years from the results where the total number of citations is lower than the reference year in at least \code{lowCitesThreshold} percent of simulations (default=FALSE)
+#' @param lowCitesThreshold numeric scalar in the interval \[0,1\] identifying threshold to define lowCites (default = 0.1)
+#' @param paperDupThreshold numeric scalar in the interval \(0,1\] (default = 0.95)
 #' @param periods optional; numeric vectors identifying which years we analyze in the data. If it is NULL (default), the function automatically selects all years in \code{papers}. 
-#' @param verbose optional; must be logical. TRUE returns detailed warnings related to lowCites. (default=NULL)
+#' @param verbose logical; returns detailed warnings related to lowCites (default=FALSE)
 #'
+#' @section Details:
+#' Are these details?
+#' 
+#' @section Values:
+#' Are these values?
+#' 
+#' @section References:
+#' Are these references?
+#' 
+#' @section See also:
+#' Are these see also?
+#' 
 #' @examples 
-#' \dontrun{
 #' data(papers)
 #' data(cites)
 #' result <- adjustCiteMetrics(papers = papers, 
@@ -45,7 +55,7 @@ gini <- function (x, weights = rep(1, length = length(x)))
 #' citedID = "citedID",
 #' citedYear = "citedYear",
 #' refYear = 1996)
-#' }
+#' @export
 adjustCiteMetrics <- function(papers,
                               cites,
                               pubID="paperID",
@@ -458,17 +468,15 @@ adjustCiteMetrics <- function(papers,
 
 #' citeIneq
 #' 
-#' Extract necessary information from the data frame in adjustCiteMetrics class.
+#' Extract citation inequality metrics from an \code{adjustCiteMetrics} object after resampling to correct for marginals bias
 #' 
-#' @param result \code{adjustCiteMetrics} class. It should be created by \code{adjustCiteMetrics} function.
-#' @param metric optional; character string to choose which inequality measures to report. default option ("all") reports all metrics computed by \code{adjustCiteMetrics}. 
-#' @param type optional; character string to decide which metrics to show between resampled (=adjusted) and original measures (=uncorrected). (default = "resampled")
-#' @param showMargins optional; logical value to decide whether to show margins or not. 
+#' @param result a \code{adjustCiteMetrics} class object created by \code{adjustCiteMetrics}.
+#' @param metric character vector indicating the inequality measures to report; possible choices are `everCited', `gini', `hhi', or user-requested quantiles, such as `q20' or `q80'.  Default is `all', which reports all metrics computed by \code{adjustCiteMetrics}. 
+#' @param type character string, the default, `resampled', reports the adjusted inequality measures.  Set to `uncorrected' to see the inequality metrics before sampling adjustment is applied
+#' @param showMargins logical, report information of the marginal and reference number of papers and citations (default is FALSE) 
 #' 
 #' @examples 
-#' \dontrun{
 #' citeIneq(result) 
-#' }
 citeIneq <- function(result, 
                      metric="all", 
                      type="resampled", 
