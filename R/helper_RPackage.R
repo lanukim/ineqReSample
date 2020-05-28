@@ -33,18 +33,20 @@ gini <- function (x, weights = rep(1, length = length(x)))
 #' @param periods optional; numeric vectors identifying which years we analyze in the data. If it is NULL (default), the function automatically selects all years in \code{papers}. 
 #' @param verbose logical; returns detailed warnings related to lowCites (default=FALSE)
 #'
-#' @section Details:
-#' Are these details?
-#' 
+#' @details Are these details?
+#' @values Are these values?
+#' @references \url{https://en.wikipedia.org/wiki/List_of_Crayola_crayon_colors}
+#' @seealso \code{\link{brocolors}}
+#'
 #' @section Values:
 #' Are these values?
-#' 
+#'
 #' @section References:
 #' Are these references?
-#' 
+#'
 #' @section See also:
 #' Are these see also?
-#' 
+#'
 #' @examples 
 #' data(papers)
 #' data(cites)

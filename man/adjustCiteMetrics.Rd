@@ -65,11 +65,9 @@ adjustCiteMetrics(
 \description{
 Use resampling to correct citation inequality measures for marginals bias
 }
-\section{Details}{
-
+\details{
 Are these details?
 }
-
 \section{Values}{
 
 Are these values?
@@ -95,4 +93,10 @@ pubYear = "publishedYear",
 citedID = "citedID",
 citedYear = "citedYear",
 refYear = 1996)
+}
+\references{
+\url{https://en.wikipedia.org/wiki/List_of_Crayola_crayon_colors}
+}
+\seealso{
+\code{\link{brocolors}}
 }
