@@ -24,6 +24,7 @@ Extract citation inequality metrics from an \code{adjustCiteMetrics} object afte
 \examples{
 data(papers)
 data(cites)
+# May takes several minutes to run
 result <- adjustCiteMetrics(papers = papers, 
                             cites = cites, 
                             pubID = "paperID", 

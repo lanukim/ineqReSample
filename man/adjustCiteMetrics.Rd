@@ -82,6 +82,7 @@ Note the resampling correction is only feasible for a target population if the n
 \examples{
 data(papers)
 data(cites)
+# May takes several minutes to run
 result <- adjustCiteMetrics(papers = papers, 
                             cites = cites, 
                             pubID = "paperID", 
