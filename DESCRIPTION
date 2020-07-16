@@ -1,6 +1,6 @@
 Package: ineqReSample
-Title: What the Package Does (One Line, Title Case)
-Version: 0.0.0.9000
+Title: Correct citation inequality measures for marginals bias via resampling
+Version: 0.0.1.0000
 Authors@R: c(
     person(given = "Christopher", family = "Adolph", role = c("aut", "cre"), email = "cadolph@uw.edu"),
     person(given = "Lanu", family = "Kim", role = "aut", email = "lanu@stanford.edu"))
