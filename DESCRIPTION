@@ -1,7 +1,7 @@
 Package: ineqReSample
 Title: Correct citation inequality measures for marginals bias via resampling
-Description: Kim, Adolph, West, and Stovel (2020) show that measures of inequality are subject to ``marginals bias,'' which impairs the ability to compare measures across time or contexts.  Consider the example of citation distributions, which describe the relative shares of incoming citations sent to each member of a population of published papers, e.g., for a specific field and year.  Inequality measures like the Gini coefficient (and even typically robust measures such as quantiles of the distribution) are only comparable across disciplinary fields or time periods if both the total number of papers potentially receiving citations and the total number of citations sent to this population remain constant.  If these ``marginals'' are rising, inequality may be understated, and if they are falling, inequality may be overstated.
-Version: 0.0.1.0000
+Description: Marginals bias can impair cross-field and cross-time comparisons of inequality in distributions of discrete variables, like the counts of citations to scientific papers.  This package implements the resampling correction introduced in Kim, Adolph, West, and Stovel (2020) to produce versions of the percentage of ever-cited papers, Gini coefficient, Herfindahl-Hirschman index, and quantile measures that correct for this bias to allow valid measurement of trends and differences in inequality.
+Version: 0.1
 Authors@R: c(
     person(given = "Christopher", family = "Adolph", role = "aut", email = "cadolph@uw.edu"),
     person(given = "Lanu", family = "Kim", role = c("aut", "cre"), email = "lanu@stanford.edu"))
