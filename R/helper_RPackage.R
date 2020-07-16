@@ -12,6 +12,7 @@ gini <- function (x, weights = rep(1, length = length(x)))
 
 #' adjustCiteMetrics
 #' 
+#' @description 
 #' Correct citation inequality measures for marginals bias via resampling
 #' 
 #' @param papers required dataframe containing all citable papers studied (one row per paper). This dataframe must include two columns: the published paper IDs (\code{paperID}) and the publication year of the paper (\code{publishedYear}). 
@@ -500,6 +501,7 @@ adjustCiteMetrics <- function(papers,
 
 #' citeIneq
 #' 
+#' @description
 #' Extract citation inequality metrics from an \code{adjustCiteMetrics} object after resampling to correct for marginals bias
 #' 
 #' @param result a \code{adjustCiteMetrics} class object created by \code{adjustCiteMetrics}.
@@ -507,8 +509,6 @@ adjustCiteMetrics <- function(papers,
 #' @param type character string, the type of metrics reported. The default, `resampled', reports the adjusted inequality measures.  Set to `uncorrected' to show the unadjusted inequality metrics
 #' @param showMargins logical, report the actual and resampled total papers and citations (default is FALSE) 
 #' 
-#' @details
-#' This function extracts results from the data object created by \code{adjustCiteMetrics}. 
 #' 
 #' @return A dataframe
 #' \describe{
@@ -532,9 +532,10 @@ adjustCiteMetrics <- function(papers,
 #' @references
 #' Lanu Kim, Christopher Adolph, Jevin West, and Katherine Stovel. 2020. ``The Influence of Changing Marginals on Measures of Inequality in Scholarly Citations: Evidence of Bias and a Resampling Correction.'' forthcoming in Sociological Science.
 #' 
-#' \url{WILL BE UPDATED}
+#' \url{http://faculty.washington.edu/cadolph/articles/kawsCitations.pdf}
 #' 
 #' @seealso \code{\link{adjustCiteMetrics}}
+#'
 #'
 #' @examples 
 #' data(papers)
@@ -546,7 +547,7 @@ adjustCiteMetrics <- function(papers,
 #'                             citedID = "citedID",
 #'                             citedYear = "citedYear",
 #'                             refYear = 1996)
-#' citeIneq(result)
+#' citeIneq(result) 
 #' @export
 citeIneq <- function(result, 
                      metric="all", 
