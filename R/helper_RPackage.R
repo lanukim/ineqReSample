@@ -79,6 +79,7 @@ gini <- function (x, weights = rep(1, length = length(x)))
 #' @examples 
 #' data(papers)
 #' data(cites)
+#' # May takes several minutes to run
 #' result <- adjustCiteMetrics(papers = papers, 
 #'                             cites = cites, 
 #'                             pubID = "paperID", 
@@ -540,6 +541,7 @@ adjustCiteMetrics <- function(papers,
 #' @examples 
 #' data(papers)
 #' data(cites)
+#' # May takes several minutes to run
 #' result <- adjustCiteMetrics(papers = papers, 
 #'                             cites = cites, 
 #'                             pubID = "paperID", 
