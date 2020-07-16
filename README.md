@@ -11,11 +11,11 @@ This package was created by Christopher Adolph and Lanu Kim (maintainer).
 
 Package citation:  
 
-Christopher Adolph and Lanu Kim.  2020.  “ineqReSample.” R Package.  Version 0.1. https://github.com/lanukim/ineqReSample
+Christopher Adolph and Lanu Kim.  2020.  "ineqReSample." R Package.  Version 0.1. https://github.com/lanukim/ineqReSample
 
 References:
 
-Lanu Kim, Christopher Adolph, Jevin West, and Katherine Stovel.  Forthcoming.  “The Influence of Changing Marginals on Measures of Inequality in Scholarly Citations: Evidence of Bias and a Resampling Correction.” Sociological Science.
+Lanu Kim, Christopher Adolph, Jevin West, and Katherine Stovel.  Forthcoming.  "The Influence of Changing Marginals on Measures of Inequality in Scholarly Citations: Evidence of Bias and a Resampling Correction." Sociological Science.
 
 Please report any package related issues here: https://github.com/lanukim/ineqReSample/issues
 
