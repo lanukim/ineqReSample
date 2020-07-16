@@ -12,7 +12,7 @@ gini <- function (x, weights = rep(1, length = length(x)))
 
 #' adjustCiteMetrics
 #' 
-#' Use resampling to correct citation inequality measures for marginals bias
+#' Correct citation inequality measures for marginals bias via resampling
 #' 
 #' @param papers required dataframe containing all citable papers studied (one row per paper). This dataframe must include two columns: the published paper IDs (\code{paperID}) and the publication year of the paper (\code{publishedYear}). 
 #' @param cites required dataframe containing all citations made to the papers listed in \code{papers} over a given set of years (one row per citation). This dataframe must include at least two columns: the IDs of the cited papers (\code{citedPaperID}), corresponding to the IDs given in \code{papers}, and the cited paper's publication year (\code{citedPaperYear}). Optionally, this dataframe may include the published year of paper sending the citation (\code{citingYear}) may be included optional.  \code{citingYear} must be included if users wish to filter citations made within \code{citationWindow} years of the cited papers' publication dates.  
@@ -23,31 +23,55 @@ gini <- function (x, weights = rep(1, length = length(x)))
 #' @param citingYear character string, the column of \code{cites} containing the year (as numeric data) in which each citing paper was published (default = NULL)
 #' @param citationWindow numeric scalar, the number of years covered by the citation window. For example, 2 means the function only analyzes citations made within 2 years after the cited paper is published. (default = NULL)
 #' @param quantiles numeric vector in the interval \(0,1\] indicating the citation quantiles to be computed. Default = c(.20, .80), for the percentage of papers accounting for 20 percent and 80 percent of all citations.
-#' @param refYear numeric scalar, the reference (or baseline) year among available publication years of papers in \code{papers}. Either \code{refYear} or \code{refPaperCount}/\code{refCiteCount} must be provided. (default = NULL)
+#' @param refYear numeric scalar, the reference (or baseline) year (or other indicated period) among available publication years of papers in \code{papers}. Either \code{refYear} or \code{refPaperCount}/\code{refCiteCount} must be provided. (default = NULL)
 #' @param refPaperCount a numeric scalar identifying the referenced publication count. Either \code{refYear} or \code{refPaperCount}/\code{refCiteCount} must be provided. (default = NULL)
 #' @param refCiteCount a numeric scalar identifying the referenced citation count. Either \code{refYear} or \code{refPaperCount}/\code{refCiteCount} must be provided. (default = NULL)
 #' @param sims optional; a numeric scalar identifying the number of times to run the simulation (default = 10)
 #' @param lowCitesInclusion logical, TRUE: reports all results; FALSE: excludes any years from the results where the total number of citations is lower than the reference year in at least \code{lowCitesThreshold} percent of simulations (default=FALSE)
 #' @param lowCitesThreshold numeric scalar in the interval \[0,1\] identifying threshold to define lowCites (default = 0.1)
 #' @param paperDupThreshold numeric scalar in the interval \(0,1\] (default = 0.95)
-#' @param periods optional; numeric vectors identifying which years we analyze in the data. If it is NULL (default), the function automatically selects all years in \code{papers}. 
+#' @param periods optional; numeric vectors identifying the years of data to adjust. If NULL (default), the function automatically selects all years in \code{papers}. 
 #' @param verbose logical; returns detailed warnings related to lowCites (default=FALSE)
 #'
 #' @details
-#' paragraph ABC
+#' Kim, Adolph, West, and Stovel (2020) show that measures of inequality are subject to ``marginals bias,'' which impairs the ability to compare measures across time or contexts.  Consider the example of citation distributions, which describe the relative shares of incoming citations sent to each member of a population of published papers, e.g., for a specific field and year.  Inequality measures like the Gini coefficient (and even typically robust measures such as quantiles of the distribution) are only comparable across disciplinary fields or time periods if both the total number of papers potentially receiving citations and the total number of citations sent to this population remain constant.  If these ``marginals'' are rising, inequality may be understated, and if they are falling, inequality may be overstated.
+#'
+#' This function corrects inequality measures for marginals bias by resampling the observed citations to have common marginals fixed to some reference level (the method suggested by Kim, Adolph, West, and Stovel, 2020).  Users may request either that inequality measures be adjusted to be comparable to those of a base period (via \code{refYear}), or to a fixed, user-provided count of papers and citations (vias \code{refPaperCount} and \code{refCiteCount}).  (The inputs to the function are named to correspond to the marginals in the citation example, but should have more general utility.)
+#'
+#' Available corrected inequality measures include the percentage of ever cited papers, the Gini coefficient, the Herfindahl-Hirschman index, and (possibly user-defined) quantile measures. Results can be most easily accessed by applying the extractor function \code{citeIneq} to the object returned by this function.
+#'
+#' Because results can vary across re-sampling iterations, the function averages adjusted measures across \code{sims} iterations. By default, this is 10 runs, but if adjusted values are unstable when re-running \code{adjustCiteMetrics}, users should increase \code{sims} until the results are consistent to the desired precision.  This is more likely to be necessary if the total number of reference papers or citations is small.
 #' 
-#' paragraph DEF
+#' Note the resampling correction is only feasible for a target population if the number of citations sent to the target population is at least a bit larger than the reference number of total citations.  Otherwise, sampling without replacement will exhaust the pool of citations before a sufficient number of citations have been sampled to match the reference count.  When the total available citations are only slightly larger than the reference level, this can happen by chance in resampling, though typically the shortage of citations is quite small and may only affect a small fraction of iterations.  By default, \code{adjustCiteMetrics} will suppress results for any period in which the proportion of runs with a shortage of citations is greater than \code{lowCitesThreshold}.  If this poses a problem, consider using a smaller reference value of total citations.
 #' 
-#' @return An object of class STM
+#'
+#' 
+#' 
+#' @return An object of class of \code{adjustCiteMetrics}, a list object containing the following elements:
 #' \describe{
-#'  \item{mu}{The corpus mean of topic prevalence and coefficients}
-#'  \item{sigma}{Covariance matrix}
+#'  \item{year}{The published year of cited papers}
+#'  \item{giniUC}{Uncorrected Gini coefficient}
+#'  \item{everCitedUC}{Uncorrected percentage of ever cited papers}
+#'  \item{hhiUC}{Uncorrected Herfindahl-Hirschman index}
+#'  \item{giniRS}{Resampling corrected Gini coefficient}
+#'  \item{everCitedRS}{Resampling corrected percentage of ever cited papers}
+#'  \item{hhiRS}{Resampling corrected Herfindahl-Hirschman index}
+#'  \item{nR}{Paper count}
+#'  \item{nR0}{Base paper count}
+#'  \item{nSXnC}{Citation count}
+#'  \item{mS0XnC0}{Base citation count}
+#'  \item{lowCites}{Proportion of simulation runs with insufficient citations to match the reference level}
+#'  \item{q20UC}{Uncorrected percentage of papers accounting for 20% of citations; similar columns are added depending on quantiles}
+#'  \item{q80UC}{Uncorrected percentage of papers accounting for 80% of citations; similar columns are added depending on quantiles}
+#'  \item{q20RS}{Resampling corrected percentage of papers accounting for 20% of citations; similar columns are added depending on quantiles}
+#'  \item{q80RS}{Resampling corrected percentage of papers accounting for 80% of citations; similar columns are added depending on quantiles}
+#'  \item{availMetrics}{List of computed inequality metrics}
 #' }
 #' 
 #' @references
-#' ref1 \url{https://en.wikipedia.org/wiki/List_of_Crayola_crayon_colors}
+#' Lanu Kim, Christopher Adolph, Jevin West, and Katherine Stovel. 2020. ``The Influence of Changing Marginals on Measures of Inequality in Scholarly Citations: Evidence of Bias and a Resampling Correction.'' forthcoming in Sociological Science.
 #' 
-#' ref2 \url{https://en.wikipedia.org/wiki/List_of_Crayola_crayon_colors}
+#' \url{http://faculty.washington.edu/cadolph/articles/kawsCitations.pdf}
 #' 
 #' @seealso \code{\link{citeIneq}}
 #'
@@ -55,12 +79,13 @@ gini <- function (x, weights = rep(1, length = length(x)))
 #' data(papers)
 #' data(cites)
 #' result <- adjustCiteMetrics(papers = papers, 
-#' cites = cites, 
-#' pubID = "paperID", 
-#' pubYear = "publishedYear", 
-#' citedID = "citedID",
-#' citedYear = "citedYear",
-#' refYear = 1996)
+#'                             cites = cites, 
+#'                             pubID = "paperID", 
+#'                             pubYear = "publishedYear", 
+#'                             citedID = "citedID",
+#'                             citedYear = "citedYear",
+#'                             refYear = 1996)
+#' citeIneq(result)
 #' @export
 adjustCiteMetrics <- function(papers,
                               cites,
@@ -153,9 +178,6 @@ adjustCiteMetrics <- function(papers,
     qStr <- sprintf('q%02d', qInt)
     for (i in 1:length(qStr)) {
         if (qDec[i]>0) {
-            # qStr[i] <- paste0(qStr[i],
-            #                   substr(as.character(qDec[i]), 2,
-            #                          nchar(as.character(qDec[i]))))
             qStr[i] <- paste0("q", gsub("\\.*0+$", "", as.character(quantiles[i]), perl=TRUE))
         }
     }
@@ -198,6 +220,7 @@ adjustCiteMetrics <- function(papers,
     ## papers
     if(pubID %in% colnames(papers)) {
         papers$paperID <- papers[,pubID]
+        papers$paperID <- as.character(papers$paperID)
     } else stop(paste("papers does not contain a column named", pubID, ": pubID should refer to a variable in papers"))
     
     if(pubYear %in% colnames(papers)) {
@@ -207,6 +230,7 @@ adjustCiteMetrics <- function(papers,
     ## cites
     if(citedID %in% colnames(cites)) {
         cites$citedPaperID <- cites[,citedID]
+        cites$citedPaperID <- as.character(cites$citedPaperID)
     } else stop(paste("cites does not contain a column named", citedID, ": citedID should refer to a variable in cites"))
     
     if(citedYear %in% colnames(cites)) {
@@ -219,8 +243,8 @@ adjustCiteMetrics <- function(papers,
         cites$citingPaperYear <- cites[,citingYear]
     } else stop(paste("cites does not contain a column named", citingYear, ": citingYear should refer to a variable in cites or be left NULL"))
    
-     
     ## Filter out "citedPaperID" that are not included in papers$paperID. 
+    
     citesBeforeFilterLength <- length(cites$citedPaperID)
     cites <- cites[cites$citedPaperID %in% papers$paperID, ]
     citesAfterFilterLength <- length(cites$citedPaperID)
@@ -236,7 +260,6 @@ adjustCiteMetrics <- function(papers,
             cites <- cites[(cites$citingPaperYear - cites$citedPaperYear) <= citationWindow,]
             } else cites <- cites
                 
-        
     ## Reference year / Referenced marginals
     ## Set up nR0 and nS0XnC0
     if (!is.null(refYear)) {
@@ -394,6 +417,9 @@ adjustCiteMetrics <- function(papers,
         
         ## Tabulate cited papers for "true" distibuiton
         citeCounts <- rep(0, nR)
+        if (is.factor(citesYear)) {
+            citesYear <- droplevels(citesYear)
+        }
         citeCounts0 <- rev(sort(as.vector(table(citesYear))))
         citeCounts[1:length(citeCounts0)] <- citeCounts0
         
@@ -478,11 +504,50 @@ adjustCiteMetrics <- function(papers,
 #' 
 #' @param result a \code{adjustCiteMetrics} class object created by \code{adjustCiteMetrics}.
 #' @param metric character vector indicating the inequality measures to report; possible choices are `everCited', `gini', `hhi', or user-requested quantiles, such as `q20' or `q80'.  Default is `all', which reports all metrics computed by \code{adjustCiteMetrics}. 
-#' @param type character string, the default, `resampled', reports the adjusted inequality measures.  Set to `uncorrected' to see the inequality metrics before sampling adjustment is applied
-#' @param showMargins logical, report information of the marginal and reference number of papers and citations (default is FALSE) 
+#' @param type character string, the type of metrics reported. The default, `resampled', reports the adjusted inequality measures.  Set to `uncorrected' to show the unadjusted inequality metrics
+#' @param showMargins logical, report the actual and resampled total papers and citations (default is FALSE) 
 #' 
+#' @details
+#' This function extracts results from the data object created by \code{adjustCiteMetrics}. 
+#' 
+#' @return A dataframe
+#' \describe{
+#'  \item{year}{The published year of cited papers}
+#'  \item{everCitedRS}{Resampling corrected percentage of ever cited papers}
+#'  \item{giniRS}{Resampling corrected Gini coefficient}
+#'  \item{hhiRS}{Resampling corrected Herfindahl-Hirschman index}
+#'  \item{q20RS}{Resampling corrected percentage of papers accounting for 20% of citations; similar columns are added depending on quantiles}
+#'  \item{q80RS}{Resampling corrected percentage of papers accounting for 80% of citations; similar columns are added depending on quantiles}
+#'  \item{everCitedUC}{Uncorrected percentage of ever cited papers}
+#'  \item{giniUC}{Uncorrected Gini coefficient}
+#'  \item{hhiUC}{Uncorrected Herfindahl-Hirschman index}
+#'  \item{q20UC}{Uncorrected percentage of papers accounting for 20% of citations; similar columns are added depending on quantiles}
+#'  \item{q80UC}{Uncorrected percentage of papers accounting for 80% of citations; similar columns are added depending on quantiles}
+#'  \item{nR}{Paper count}
+#'  \item{nR0}{Base paper count}
+#'  \item{nSXnC}{Citation count}
+#'  \item{mS0XnC0}{Base citation count}
+#' }
+#' 
+#' @references
+#' Lanu Kim, Christopher Adolph, Jevin West, and Katherine Stovel. 2020. ``The Influence of Changing Marginals on Measures of Inequality in Scholarly Citations: Evidence of Bias and a Resampling Correction.'' forthcoming in Sociological Science.
+#' 
+#' \url{WILL BE UPDATED}
+#' 
+#' @seealso \code{\link{adjustCiteMetrics}}
+#'
 #' @examples 
-#' citeIneq(result) 
+#' data(papers)
+#' data(cites)
+#' result <- adjustCiteMetrics(papers = papers, 
+#'                             cites = cites, 
+#'                             pubID = "paperID", 
+#'                             pubYear = "publishedYear", 
+#'                             citedID = "citedID",
+#'                             citedYear = "citedYear",
+#'                             refYear = 1996)
+#' citeIneq(result)
+#' @export
 citeIneq <- function(result, 
                      metric="all", 
                      type="resampled", 
