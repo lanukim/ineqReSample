@@ -11,3 +11,4 @@ LazyData: true
 Depends: 
     R (>= 2.10)
 BugReports: https://github.com/lanukim/ineqReSample/issues
+RoxygenNote: 7.1.0
