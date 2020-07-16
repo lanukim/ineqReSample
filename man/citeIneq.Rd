@@ -9,15 +9,35 @@ citeIneq(result, metric = "all", type = "resampled", showMargins = FALSE)
 \arguments{
 \item{result}{a \code{adjustCiteMetrics} class object created by \code{adjustCiteMetrics}.}
 
-\item{metric}{character vector indicating the inequality measures to report; possible choices are \verb{everCited', }gini', \verb{hhi', or user-requested quantiles, such as }q20' or \verb{q80'.  Default is }all', which reports all metrics computed by \code{adjustCiteMetrics}.}
+\item{metric}{character vector indicating the inequality measures to report; possible choices are `everCited', `gini', `hhi', or user-requested quantiles, such as `q20' or `q80'.  Default is `all', which reports all metrics computed by \code{adjustCiteMetrics}.}
 
-\item{type}{character string, the default, \verb{resampled', reports the adjusted inequality measures.  Set to }uncorrected' to see the inequality metrics before sampling adjustment is applied}
+\item{type}{character string, the type of metrics reported. The default, `resampled', reports the adjusted inequality measures.  Set to `uncorrected' to show the unadjusted inequality metrics}
 
-\item{showMargins}{logical, report information of the marginal and reference number of papers and citations (default is FALSE)}
+\item{showMargins}{logical, report the actual and resampled total papers and citations (default is FALSE)}
+}
+\value{
+
 }
 \description{
 Extract citation inequality metrics from an \code{adjustCiteMetrics} object after resampling to correct for marginals bias
 }
 \examples{
+data(papers)
+data(cites)
+result <- adjustCiteMetrics(papers = papers, 
+                            cites = cites, 
+                            pubID = "paperID", 
+                            pubYear = "publishedYear", 
+                            citedID = "citedID",
+                            citedYear = "citedYear",
+                            refYear = 1996)
 citeIneq(result) 
+}
+\references{
+Lanu Kim, Christopher Adolph, Jevin West, and Katherine Stovel. 2020. ``The Influence of Changing Marginals on Measures of Inequality in Scholarly Citations: Evidence of Bias and a Resampling Correction.'' forthcoming in Sociological Science.
+
+\url{http://faculty.washington.edu/cadolph/articles/kawsCitations.pdf}
+}
+\seealso{
+\code{\link{adjustCiteMetrics}}
 }
